@@ -171,14 +171,11 @@
           };
           systemd.services.smtping = {
             description = "SMTPing Service";
-            after = ["network.target"];
-            wantedBy = ["multi-user.target"];
+            requires = ["smtping.socket"];
             serviceConfig = {
               User = "smtping";
               Group = "smtping";
               ExecStart = "${self.packages.${pkgs.system}.default}/bin/smtping";
-              Restart = "on-failure";
-              AmbientCapabilities = "CAP_NET_BIND_SERVICE";
             };
           };
         };

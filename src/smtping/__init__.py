@@ -49,11 +49,6 @@ class PongHandler:
 
 class SystemDController(Controller):
     def _create_server(self) -> Awaitable[asyncio.AbstractServer]:
-        """
-        Creates a 'server task' that listens on an INET host:port.
-        Does NOT actually start the protocol object itself;
-        _factory_invoker() is only called upon fist connection attempt.
-        """
         sock = socket.fromfd(3, socket.AF_INET, socket.SOCK_STREAM)
         return self.loop.create_server(
             self._factory_invoker,

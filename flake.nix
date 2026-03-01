@@ -98,7 +98,7 @@
         nodes = {
           machine = {pkgs, ...}: {
             imports = [inputs.self.nixosModules.default];
-            environment.systemPackages = [pkgs.swaks];
+            environment.systemPackages = [pkgs.swaks self.packages.${pkgs.stdenv.hostPlatform.system}.default];
             services.smtping.enable = true;
           };
         };
@@ -118,6 +118,9 @@
           status = machine.succeed("swaks -s localhost:25 -t test@test.test --quit-after rcpt")
 
           # Check if our server returns something.
+          assert "250 OK" in status, f"'{status}' is not healthy! Check failed."
+
+          status = machine.succeed("pyswaks -s localhost:25 -t test@test.test --quit-after rcpt")
           assert "250 OK" in status, f"'{status}' is not healthy! Check failed."
         '';
       };
@@ -175,7 +178,7 @@
             serviceConfig = {
               User = "smtping";
               Group = "smtping";
-              ExecStart = "${self.packages.${pkgs.system}.default}/bin/smtping";
+              ExecStart = "${self.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/smtping";
             };
           };
         };

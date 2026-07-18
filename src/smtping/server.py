@@ -54,6 +54,7 @@ class PongHandler:
         tempfile = tempfile.NameTemporaryFile(dir=tmp_path, delete=False).name
         with open(tempfile, "wb") as f:
             f.write(envelope.content)
+        return "250 OK"
 
 
 class SystemDController(Controller):

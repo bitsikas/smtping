@@ -2,7 +2,7 @@
   description = "hello world application using uv2nix";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
 
     pyproject-nix = {
       url = "github:pyproject-nix/pyproject.nix";

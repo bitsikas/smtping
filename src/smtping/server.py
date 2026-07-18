@@ -19,8 +19,6 @@ class Action(enum.StrEnum):
 async def handle_action(action, params):
     if action.startswith(Action.SLEEP):
         await asyncio.sleep(int(params[0]) if params else 1)
-    if action.endswith(Action.STORE):
-        return f"250 OK {params[0]}".strip() if params else "250 OK"
     if action.endswith(Action.ACCEPT):
         return f"250 OK {params[0]}".strip() if params else "250 OK"
     if action.endswith(Action.REJECT):

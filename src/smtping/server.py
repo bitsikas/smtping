@@ -48,7 +48,7 @@ class PongHandler:
             action, *params = rest
         return await handle_action(action, params)
 
-    async def handle_DATA(server, session, envelope):
+    async def handle_DATA(self, server, session, envelope):
 
         tmp_path = "/tmp/smtping/"
         tempfile = tempfile.NameTemporaryFile(dir=tmp_path, delete=False).name

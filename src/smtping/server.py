@@ -51,8 +51,8 @@ class PongHandler:
     async def handle_DATA(self, server, session, envelope):
 
         tmp_path = "/tmp/smtping/"
-        tempfile = tempfile.NameTemporaryFile(dir=tmp_path, delete=False).name
-        with open(tempfile, "wb") as f:
+        tmpfile = tempfile.NameTemporaryFile(dir=tmp_path, delete=False).name
+        with open(tmpfile, "wb") as f:
             f.write(envelope.content)
         return "250 OK"
 

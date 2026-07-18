@@ -1,7 +1,9 @@
+import os
 import enum
 import socket
 import signal
 import asyncio
+import tempfile
 import functools
 from aiosmtpd.controller import Controller
 from typing import Awaitable
@@ -17,6 +19,8 @@ class Action(enum.StrEnum):
 async def handle_action(action, params):
     if action.startswith(Action.SLEEP):
         await asyncio.sleep(int(params[0]) if params else 1)
+    if action.endswith(Action.STORE):
+        return f"250 OK {params[0]}".strip() if params else "250 OK"
     if action.endswith(Action.ACCEPT):
         return f"250 OK {params[0]}".strip() if params else "250 OK"
     if action.endswith(Action.REJECT):
@@ -45,6 +49,13 @@ class PongHandler:
         if rest:
             action, *params = rest
         return await handle_action(action, params)
+
+    async def handle_DATA(server, session, envelope):
+
+        tmp_path = "/tmp/smtping/"
+        tempfile = tempfile.NameTemporaryFile(dir=tmp_path, delete=False).name
+        with open(tempfile, "wb") as f:
+            f.write(envelope.content)
 
 
 class SystemDController(Controller):
@@ -83,4 +94,5 @@ async def amain() -> None:
 
 
 def main() -> None:
+    os.makedirs("/tmp/smtping/", exist_ok=True)
     asyncio.run(amain())
